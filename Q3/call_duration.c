@@ -32,8 +32,6 @@
 
 double get_call_duration(void)
 {
-  return exponential_generator((double) MEAN_CALL_DURATION);
+  Call_Ptr call;
+  return exponential_generator((double)call->call_duration);
 }
-
-
-

@@ -30,19 +30,15 @@
 
 /*******************************************************************************/
 
-#define Call_ARRIVALRATE 3   /* calls/minute */
-#define MEAN_CALL_DURATION 3 /* minutes */
-#define RUNLENGTH 5e6 /* number of successful calls */
+#define Call_ARRIVALRATE 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1   /* calls/minute */
+#define MEAN_CALL_DURATION 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 30, 50, 60, 90, 100 /* minutes */
+#define RUNLENGTH 5e6        /* number of successful calls */
 #define BLIPRATE 1e3
-#define NUMBER_OF_CHANNELS 11
+#define NUMBER_OF_CHANNELS 5, 7, 8, 10, 11, 13, 14, 15, 17, 18, 42, 64, 75, 106, 117
 
 /* Comma separated list of random seeds to run. */
-#define RANDOM_SEED_LIST 333, 4444, 55555
+#define RANDOM_SEED_LIST 400050636, 400099173, 345
 
 /*******************************************************************************/
 
 #endif /* simparameters.h */
-
-
-
-
