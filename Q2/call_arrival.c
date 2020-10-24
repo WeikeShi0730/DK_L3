@@ -40,8 +40,8 @@
  */
 
 long int
-schedule_call_arrival_event(Simulation_Run_Ptr simulation_run, 
-			    double event_time)
+schedule_call_arrival_event(Simulation_Run_Ptr simulation_run,
+                            double event_time)
 {
   Event new_event;
 
@@ -58,8 +58,7 @@ schedule_call_arrival_event(Simulation_Run_Ptr simulation_run,
  * Call arrival event function.
  */
 
-void
-call_arrival_event(Simulation_Run_Ptr simulation_run, void * ptr)
+void call_arrival_event(Simulation_Run_Ptr simulation_run, void *ptr)
 {
   Call_Ptr new_call;
   Channel_Ptr free_channel;
@@ -72,29 +71,33 @@ call_arrival_event(Simulation_Run_Ptr simulation_run, void * ptr)
   sim_data->call_arrival_count++;
 
   /* See if there is a free channel.*/
-  if((free_channel = get_free_channel(simulation_run)) != NULL) {
+  if ((free_channel = get_free_channel(simulation_run)) != NULL)
+  {
 
     /* Yes, we found one. Allocate some memory and start the call. */
-    new_call = (Call_Ptr) xmalloc(sizeof(Call));
+    new_call = (Call_Ptr)xmalloc(sizeof(Call));
     new_call->arrive_time = now;
-    new_call->call_duration = get_call_duration();
+    new_call->call_duration = exponential_generator((double)sim_data->call_duration);
+    
 
     /* Place the call in the free channel and schedule its
        departure. */
-    server_put(free_channel, (void*) new_call);
+    server_put(free_channel, (void *)new_call);
     new_call->channel = free_channel;
 
     schedule_end_call_on_channel_event(simulation_run,
-				       now + new_call->call_duration,
-				       (void *) free_channel);
-  } else {
+                                       now + new_call->call_duration,
+                                       (void *)free_channel);
+  }
+  else
+  {
     /* No free channel was found. The call is blocked. */
     sim_data->blocked_call_count++;
   }
 
   /* Schedule the next call arrival. */
   schedule_call_arrival_event(simulation_run,
-	      now + exponential_generator((double) 1/Call_ARRIVALRATE));
+                              now + exponential_generator((double)1 / sim_data->call_arrival_rate));
 }
 
 /*******************************************************************************/
@@ -111,13 +114,14 @@ Channel_Ptr get_free_channel(Simulation_Run_Ptr simulation_run)
   Simulation_Run_Data_Ptr sim_data;
 
   sim_data = simulation_run_data(simulation_run);
+
+  int number_of_channels = sim_data->number_of_channels;
   channels = sim_data->channels;
 
-  for (i=0; i<NUMBER_OF_CHANNELS; i++) {
-    if (server_state(*(channels+i)) == FREE)
-      return *(channels+i);
+  for (i = 0; i < number_of_channels; i++)
+  {
+    if (server_state(*(channels + i)) == FREE)
+      return *(channels + i);
   }
-  return (Channel_Ptr) NULL;
+  return (Channel_Ptr)NULL;
 }
-
-
