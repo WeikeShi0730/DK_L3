@@ -208,6 +208,9 @@ server_put(Server_Ptr, void*);
 void *
 server_get(Server_Ptr);
 
+void *
+server_peek(Server_Ptr);
+
 Server_State
 server_state(Server_Ptr);
 

@@ -48,7 +48,7 @@ int main(void)
 
   // create a csv file
   FILE *fp;
-  char data_set_name[] = "./Q2.csv";
+  char data_set_name[] = "./Q5.csv";
   //file IO
 
   fp = fopen(data_set_name, "w");
@@ -61,6 +61,10 @@ int main(void)
   fprintf(fp, ("Blocked call count,"));
   fprintf(fp, ("Calls processed ,"));
   fprintf(fp, ("Block rate ,"));
+  fprintf(fp, ("Give up time ,"));
+  fprintf(fp, ("wait time ,"));
+  fprintf(fp, ("taxi_arrive_customer_left_count ,"));
+  fprintf(fp, ("Customer left rate ,"));
 
   fprintf(fp, "\n");
   fclose(fp);
@@ -72,6 +76,8 @@ int main(void)
   unsigned random_seed;
   int NUMBER_OF_CHANNELS_LIST[] = {NUMBER_OF_CHANNELS};
   double Call_ARRIVALRATE_LIST[] = {Call_ARRIVALRATE};
+  double GIVE_UP_TIME_LIST[] = {GIVE_UP_TIME};
+  double WAIT_TIME_LIST[] = {WAIT_TIME};
   double MEAN_CALL_DURATION_LIST[] = {MEAN_CALL_DURATION};
   int size_rand_seed = (sizeof(RANDOM_SEEDS) / sizeof(unsigned)) - 1;
 
@@ -88,6 +94,7 @@ int main(void)
       random_seed = RANDOM_SEEDS[j];
 
       for_avg_acc.call_arrival_count = 0;
+      for_avg_acc.taxi_arrive_customer_left_count = 0;
       for_avg_acc.blip_counter = 0;
       for_avg_acc.blocked_call_count = 0;
       for_avg_acc.number_of_calls_processed = 0;
@@ -105,9 +112,12 @@ int main(void)
         /* Initialize our simulation_run data variables. */
         data.call_arrival_rate = Call_ARRIVALRATE_LIST[k];
         data.call_duration = MEAN_CALL_DURATION_LIST[k];
+        data.taxi_wait_time =  WAIT_TIME_LIST[k];
+        data.give_up_time = GIVE_UP_TIME_LIST[k];
         data.number_of_channels = NUMBER_OF_CHANNELS_LIST[l];
         data.blip_counter = 0;
         data.call_arrival_count = 0;
+        data.taxi_arrive_customer_left_count = 0;
         data.blocked_call_count = 0;
         data.number_of_calls_processed = 0;
         data.accumulated_call_time = 0.0;
@@ -140,6 +150,7 @@ int main(void)
         //output_results(simulation_run);
 
         for_avg_acc.call_arrival_count += data.call_arrival_count;
+        for_avg_acc.taxi_arrive_customer_left_count += data.taxi_arrive_customer_left_count;
         for_avg_acc.blip_counter += data.call_arrival_count;
         for_avg_acc.blocked_call_count += data.blocked_call_count;
         for_avg_acc.number_of_calls_processed += data.number_of_calls_processed;
@@ -152,6 +163,7 @@ int main(void)
       }
 
       for_avg_acc.call_arrival_count /= size_rand_seed;
+      for_avg_acc.taxi_arrive_customer_left_count /= size_rand_seed;
       for_avg_acc.blip_counter /= size_rand_seed;
       for_avg_acc.blocked_call_count /= size_rand_seed;
       for_avg_acc.number_of_calls_processed /= size_rand_seed;
@@ -183,6 +195,19 @@ int main(void)
             //fprintf(fp, ("Block rate ,"));
             fprintf(fp, "%f, ", (double)for_avg_acc.blocked_call_count / for_avg_acc.call_arrival_count);
 
+            //fprintf(fp, ("Give up time ,"));
+            fprintf(fp, "%f, ", (double)data.give_up_time);
+
+            //fprintf(fp, ("wait time ,"));
+            fprintf(fp, "%f, ", (double)data.taxi_wait_time);
+
+            //fprintf(fp, ("taxi_arrive_customer_left_count ,"));
+            fprintf(fp, "%f, ", (double)for_avg_acc.taxi_arrive_customer_left_count);
+
+            //fprintf(fp, ("Customer left rate ,"));
+            fprintf(fp, "%f, ", (double)for_avg_acc.taxi_arrive_customer_left_count / for_avg_acc.call_arrival_count);
+
+           
             fprintf(fp, "\n");
             fclose(fp);
       #endif
@@ -195,6 +220,10 @@ int main(void)
       printf("Blocked call count = %ld \n", for_avg_acc.blocked_call_count);
       printf("Calls processed = %ld \n", for_avg_acc.number_of_calls_processed);
       printf("Block rate = %f \n", (double)for_avg_acc.blocked_call_count / for_avg_acc.call_arrival_count);
+      printf("Give up time = %f \n", data.give_up_time);
+      printf("wait time = %f \n", data.taxi_wait_time);
+      printf("taxi_arrive_customer_left_count = %f \n", for_avg_acc.taxi_arrive_customer_left_count);
+      printf("Customer left rate = %f \n", (double)for_avg_acc.taxi_arrive_customer_left_count / for_avg_acc.call_arrival_count);
       printf("\n");
     }
   }

@@ -42,6 +42,11 @@ end_call_on_channel_event(Simulation_Run_Ptr ThisSimulation_Run, void*);
 long int
 schedule_end_call_on_channel_event(Simulation_Run_Ptr, double, void*);
 
+void
+wait_taxi_on_channel_event(Simulation_Run_Ptr ThisSimulation_Run, void*);
+
+long int
+schedule_wait_taxi_on_channel_event(Simulation_Run_Ptr, double, void*);
 /*******************************************************************************/
 
 #endif /* call_departure.h */

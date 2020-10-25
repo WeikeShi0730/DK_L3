@@ -88,3 +88,52 @@ end_call_on_channel_event(Simulation_Run_Ptr simulation_run, void * c_ptr)
 }
 
 
+long int
+schedule_wait_taxi_on_channel_event(Simulation_Run_Ptr simulation_run,
+				   double event_time,
+				   void * channel) 
+{
+  Event new_event;
+
+  new_event.description = "End of Wait Taxi";
+  new_event.function = wait_taxi_on_channel_event;
+  new_event.attachment = channel;
+
+  return simulation_run_schedule_event(simulation_run, new_event, event_time);
+}
+
+
+void
+wait_taxi_on_channel_event(Simulation_Run_Ptr simulation_run, void * c_ptr)
+{
+  Call_Ptr this_call;
+  Channel_Ptr channel;
+  Simulation_Run_Data_Ptr sim_data;
+  double now;
+
+  channel = (Channel_Ptr) c_ptr;
+
+  now = simulation_run_get_time(simulation_run);
+  sim_data = simulation_run_data(simulation_run);
+
+  this_call = (Call_Ptr) server_peek(channel);
+
+  if (this_call->give_up_time < this_call->taxi_wait_time)
+  {
+      /* Remove the call from the channel.*/
+      sim_data->taxi_arrive_customer_left_count++;
+      this_call = (Call_Ptr) server_get(channel);
+      xfree((void*) this_call);
+  }
+  else
+  {
+      schedule_end_call_on_channel_event(simulation_run, now + this_call->call_duration, (void *)c_ptr);
+
+  }
+
+  TRACE(printf("Taxi arrived.\n"););
+
+  //output_progress_msg_to_screen(simulation_run);
+
+  /* This call is done. Free up its allocated memory.*/
+}

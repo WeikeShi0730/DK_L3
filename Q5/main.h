@@ -46,6 +46,8 @@ typedef enum
 typedef struct _call_
 {
   double arrive_time;
+  double taxi_wait_time;
+  double give_up_time;
   double call_duration;
   Channel_Ptr channel;
 } Call, *Call_Ptr;
@@ -58,8 +60,11 @@ typedef struct _simulation_run_data_
   long int blip_counter;
   double call_arrival_rate;
   double call_duration;
+  double taxi_wait_time;
+  double give_up_time;
   long int call_arrival_count;
   long int blocked_call_count;
+  long int taxi_arrive_customer_left_count;
   long int number_of_calls_processed;
   double accumulated_call_time;
   unsigned random_seed;

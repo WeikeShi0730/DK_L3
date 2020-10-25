@@ -548,6 +548,20 @@ server_get(Server_Ptr server)
   return entry;
 }
 
+void *
+server_peek(Server_Ptr server)
+{
+  void *entry;
+
+  if (server_state(server) == FREE) {
+      printf("Error: Cannot peek from free server.\n");
+      exit(1);
+    }
+
+  entry = server->customer_in_service;
+  return entry;
+}
+
 /*
  * Test if the server is FREE or BUSY.
  */
