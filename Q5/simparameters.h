@@ -30,15 +30,33 @@
 
 /*******************************************************************************/
 
-#define Call_ARRIVALRATE 1, 1, 1, 1, 1, 1   /* calls/minute */
-#define MEAN_CALL_DURATION 1, 3, 5, 7, 9, 11 /* minutes */
-#define RUNLENGTH 5e6        /* number of successful calls */
-#define BLIPRATE 1e3
-#define NUMBER_OF_CHANNELS 1, 3, 5, 7, 9, 11, 13, 15, 17, 19
+#ifdef FAST_RUN
 
+#define Call_ARRIVALRATE 1, 1   /* calls/minute */ //lamda
+#define MEAN_CALL_DURATION 1, 3 /* minutes */ // D
+#define RUNLENGTH 5e1        /* number of successful calls */
+#define GIVE_UP_TIME 1, 3 //G
+#define WAIT_TIME 1, 3 //W
+
+#define BLIPRATE 1e3
+#define NUMBER_OF_CHANNELS 1, 3, 5 //K
+/* Comma separated list of random seeds to run. */
+#define RANDOM_SEED_LIST 400050636, 400099173
+
+#else
+
+#define Call_ARRIVALRATE 1, 1, 1, 1, 1, 1   /* calls/minute */ //lamda
+#define MEAN_CALL_DURATION 1, 3, 5, 7, 9, 11 /* minutes */ // D
+#define RUNLENGTH 5e6        /* number of successful calls */
+#define GIVE_UP_TIME 1, 3, 5, 7, 9, 11 //G
+#define WAIT_TIME 1, 3, 5, 7, 9, 11 //W
+
+#define BLIPRATE 1e3
+#define NUMBER_OF_CHANNELS 1, 3, 5, 7, 9, 11, 13, 15, 17, 19 //K
 /* Comma separated list of random seeds to run. */
 #define RANDOM_SEED_LIST 400050636, 400099173, 345
 
+#endif //FAST_RUN
 /*******************************************************************************/
 
 #endif /* simparameters.h */
