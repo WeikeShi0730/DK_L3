@@ -77,9 +77,15 @@ void call_arrival_event(Simulation_Run_Ptr simulation_run, void *ptr)
     /* Yes, we found one. Allocate some memory and start the call. */
     new_call = (Call_Ptr)xmalloc(sizeof(Call));
     new_call->arrive_time = now;
+#ifdef all_discrete
+    new_call->call_duration = (double)sim_data->call_duration;
+    new_call->taxi_wait_time = (double)sim_data->taxi_wait_time;
+    new_call->give_up_time = (double)sim_data->give_up_time;
+#else
     new_call->call_duration = exponential_generator((double)sim_data->call_duration);
     new_call->taxi_wait_time = exponential_generator((double)sim_data->taxi_wait_time);
     new_call->give_up_time = exponential_generator((double)sim_data->give_up_time);
+#endif
     
 
     /* Place the call in the free channel and schedule its

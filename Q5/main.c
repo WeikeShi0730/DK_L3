@@ -202,7 +202,7 @@ int main(void)
             fprintf(fp, "%f, ", (double)data.taxi_wait_time);
 
             //fprintf(fp, ("taxi_arrive_customer_left_count ,"));
-            fprintf(fp, "%f, ", (double)for_avg_acc.taxi_arrive_customer_left_count);
+            fprintf(fp, "%d, ", (double)for_avg_acc.taxi_arrive_customer_left_count);
 
             //fprintf(fp, ("Customer left rate ,"));
             fprintf(fp, "%f, ", (double)for_avg_acc.taxi_arrive_customer_left_count / for_avg_acc.call_arrival_count);
@@ -222,7 +222,7 @@ int main(void)
       printf("Block rate = %f \n", (double)for_avg_acc.blocked_call_count / for_avg_acc.call_arrival_count);
       printf("Give up time = %f \n", data.give_up_time);
       printf("wait time = %f \n", data.taxi_wait_time);
-      printf("taxi_arrive_customer_left_count = %f \n", for_avg_acc.taxi_arrive_customer_left_count);
+      printf("taxi_arrive_customer_left_count = %d \n", for_avg_acc.taxi_arrive_customer_left_count);
       printf("Customer left rate = %f \n", (double)for_avg_acc.taxi_arrive_customer_left_count / for_avg_acc.call_arrival_count);
       printf("\n");
     }

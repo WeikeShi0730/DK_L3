@@ -118,6 +118,8 @@ wait_taxi_on_channel_event(Simulation_Run_Ptr simulation_run, void * c_ptr)
 
   this_call = (Call_Ptr) server_peek(channel);
 
+  TRACE(printf("give_up_time %f.\n",this_call->give_up_time););
+  TRACE(printf("taxi_wait_time %f.\n",this_call->taxi_wait_time););
   if (this_call->give_up_time < this_call->taxi_wait_time)
   {
       /* Remove the call from the channel.*/
