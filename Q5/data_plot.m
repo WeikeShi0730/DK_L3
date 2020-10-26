@@ -24,6 +24,7 @@ end
 hold off
 grid on
 title('Packet Arrival rate vs. Mean Delay');
+set(gca, 'YScale', 'log');
 
 xlabel('Number of Channels') 
 ylabel('Blocking rate') 
