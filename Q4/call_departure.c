@@ -41,8 +41,8 @@
 
 long int
 schedule_end_call_on_channel_event(Simulation_Run_Ptr simulation_run,
-				   double event_time,
-				   void * channel) 
+                                   double event_time,
+                                   void *channel)
 {
   Event new_event;
 
@@ -59,21 +59,20 @@ schedule_end_call_on_channel_event(Simulation_Run_Ptr simulation_run,
  * Function which handles end of call events.
  */
 
-void
-end_call_on_channel_event(Simulation_Run_Ptr simulation_run, void * c_ptr)
+void end_call_on_channel_event(Simulation_Run_Ptr simulation_run, void *c_ptr)
 {
-  Call_Ptr this_call;
+  Call_Ptr this_call, next_call;
   Channel_Ptr channel;
   Simulation_Run_Data_Ptr sim_data;
   double now;
 
-  channel = (Channel_Ptr) c_ptr;
+  channel = (Channel_Ptr)c_ptr;
 
   now = simulation_run_get_time(simulation_run);
   sim_data = simulation_run_data(simulation_run);
 
   /* Remove the call from the channel.*/
-  this_call = (Call_Ptr) server_get(channel);
+  this_call = (Call_Ptr)server_get(channel);
 
   TRACE(printf("End Of Call.\n"););
 
@@ -84,7 +83,40 @@ end_call_on_channel_event(Simulation_Run_Ptr simulation_run, void * c_ptr)
   //output_progress_msg_to_screen(simulation_run);
 
   /* This call is done. Free up its allocated memory.*/
-  xfree((void*) this_call);
+  xfree((void *)this_call);
+
+  /* 
+   * See if there is are packets waiting in the buffer. If so, take the next one
+   * out and transmit it immediately.
+  */
+
+  if (fifoqueue_size(sim_data->buffer) > 0)
+  {
+    next_call = (Call_Ptr)fifoqueue_get(sim_data->buffer);
+    start_call_process(simulation_run, next_call, c_ptr);
+  }
 }
 
+void start_call_process(Simulation_Run_Ptr simulation_run,
+                        Call_Ptr this_call, Channel_Ptr free_channel)
+{
+  /* Place the call in the free channel and schedule its
+       departure. */
+  server_put(free_channel, (void *)this_call);
+  this_call->channel = free_channel;
 
+  Simulation_Run_Data_Ptr sim_data;
+  sim_data = simulation_run_data(simulation_run);
+  double now = simulation_run_get_time(simulation_run);
+  double wait_time = now - this_call->arrive_time;
+
+  sim_data->call_wait_time += wait_time;
+  if (wait_time * 60 < sim_data->t)
+  {
+    sim_data->call_wait_less_than_t++;
+  }
+
+  schedule_end_call_on_channel_event(simulation_run,
+                                     simulation_run_get_time(simulation_run) + this_call->call_duration,
+                                     (void *)free_channel);
+}

@@ -54,12 +54,14 @@ typedef struct _simulation_run_data_
 {
   Channel_Ptr *channels;
 
-  
+  Fifoqueue_Ptr buffer;
   int number_of_channels;
   long int blip_counter;
   double call_arrival_rate;
   double call_duration;
   double call_wait_time;
+  long int call_wait_less_than_t;
+  int t;
   long int call_arrival_count;
   long int blocked_call_count;
   long int number_of_calls_processed;

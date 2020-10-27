@@ -70,29 +70,23 @@ void call_arrival_event(Simulation_Run_Ptr simulation_run, void *ptr)
   sim_data = simulation_run_data(simulation_run);
   sim_data->call_arrival_count++;
 
+  new_call = (Call_Ptr)xmalloc(sizeof(Call));
+  new_call->arrive_time = now;
+  new_call->call_duration = exponential_generator((double)sim_data->call_duration);
+
+  if (fifoqueue_size(sim_data->buffer) > 0)
+  {
+    sim_data->blocked_call_count++;
+  }
   /* See if there is a free channel.*/
   if ((free_channel = get_free_channel(simulation_run)) != NULL)
   {
-
-    /* Yes, we found one. Allocate some memory and start the call. */
-    new_call = (Call_Ptr)xmalloc(sizeof(Call));
-    new_call->arrive_time = now;
-    new_call->call_duration = exponential_generator((double)sim_data->call_duration);
-    
-
-    /* Place the call in the free channel and schedule its
-       departure. */
-    server_put(free_channel, (void *)new_call);
-    new_call->channel = free_channel;
-
-    schedule_end_call_on_channel_event(simulation_run,
-                                       now + new_call->call_duration,
-                                       (void *)free_channel);
+    start_call_process(simulation_run, new_call, free_channel);
   }
   else
   {
     /* No free channel was found. The call is blocked. */
-    sim_data->blocked_call_count++;
+    fifoqueue_put(sim_data->buffer, (void *)new_call);
   }
 
   /* Schedule the next call arrival. */

@@ -36,15 +36,14 @@
  *
  */
 
-void
-end_call_on_channel_event(Simulation_Run_Ptr ThisSimulation_Run, void*);
+void end_call_on_channel_event(Simulation_Run_Ptr ThisSimulation_Run, void *);
 
 long int
-schedule_end_call_on_channel_event(Simulation_Run_Ptr, double, void*);
+schedule_end_call_on_channel_event(Simulation_Run_Ptr, double, void *);
+
+void start_call_process(Simulation_Run_Ptr simulation_run,
+                        Call_Ptr this_call, Channel_Ptr free_channel);
 
 /*******************************************************************************/
 
 #endif /* call_departure.h */
-
-
-
