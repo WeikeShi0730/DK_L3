@@ -1,34 +1,36 @@
 %T = readtable('Q2.csv', 'HeaderLines',1);  % skips the first three rows of data
 Table = csvread('Q2.csv',1);  % skips the first three rows of data
 
-x1 = Table(1:10,3);
-y1 = Table(1:10,7);
+chan_size = 10;
+loop_size = 6;
 
-x2 = Table(12:21,3);
-y2 = Table(12:21,7);
 
-x3 = Table(22:31,3);
-y3 = Table(22:31,7);
+%experiment
+x = Table(1:chan_size,3);
 
-x4 = Table(32:41,3);
-y4 = Table(32:41,7);
+for i = 1 : loop_size
+    block_rate(:,i) = Table(chan_size*(i-1)+1:chan_size*i,7);
+    offer_load(i) = Table(chan_size * (i),2);
+end
 
-x5 = Table(42:51,3);
-y5 = Table(42:51,7);
+%calc
+%for i = 1 : loop_size
+    %for I = 1 : x(i)
+        %B(:,i) = (offer_load(i).^x(i)/factorial(x(i)))/sum(offer_load(i).^I/factorial(I),I,0,x(i));
+    %end
+%end
 
-%x6 = Table(52:61,3);
-%y6 = Table(52:61,7);
-
-plot(x1,y1,'b--o');
 hold on 
-plot(x2,y2,'b--o');
-plot(x3,y3,'b--o');
-plot(x4,y4,'b--o');
-plot(x5,y5,'b--o');
-%plot(x6,y6,'b--o');
+for i = 1 : loop_size
+    block_p(i) = plot(x,block_rate(:,i),'Color',[0.1*i,0.13*i,0.6]);
+    block_p(i).Marker = '*';
+    text(x(chan_size/2-1),block_rate(chan_size/2-1,i),sprintf('A = %d',offer_load(i)))
+end;
+
 hold off
 grid on
-title('Packet Arrival rate vs. Mean Delay');
+title('Number of Channels vs. Blocking rate');
+set(gca, 'YScale', 'log');
 
 xlabel('Number of Channels') 
 ylabel('Blocking rate') 
