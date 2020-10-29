@@ -17,14 +17,18 @@ end
 hold on 
 %block_p = plot(x,offer_load,'Color',[0.83,0.9,0.7]);
 block_p = plot(x,offer_load,'r');
+%block_p = plot(x(1:10),offer_load(1:10),'r');
 block_p.Marker = '*';
 
+%for j = 1 : chan_size
+%    text(x(i),offer_load(i),sprintf('%.3f',block_rate(i)))
+%end
 %text(x(chan_size/2-1),block_rate(chan_size/2-1,i),sprintf('A = %d',offer_load(i)))
 
 hold off
 grid on
-title('Number of Channels vs. Blocking rate');
+title('Number of Channels vs. offer_load on max 1% block rate');
 %set(gca, 'YScale', 'log');
 
 xlabel('Number of Channels') 
-ylabel('Blocking rate') 
+ylabel('offer_load') 
