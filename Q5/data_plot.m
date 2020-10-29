@@ -1,5 +1,5 @@
 %T = readtable('Q2.csv', 'HeaderLines',1);  % skips the first three rows of data
-Table = csvread('Q5.csv',1);  % skips the first three rows of data
+Table = csvread('Q5_base.csv',1);  % skips the first three rows of data
 
 chan_size = 10;
 loop_size = 5;
@@ -23,9 +23,10 @@ for i = 1 : loop_size
 end
 hold off
 grid on
-title('Packet Arrival rate vs. Mean Delay');
-set(gca, 'YScale', 'log');
+title('Number of Channels vs. Blocking rate');
+%set(gca, 'YScale', 'log');
 
 xlabel('Number of Channels') 
-ylabel('Blocking rate') 
+ylabel('Blocking/left rate') 
+legend('block rate','left rate','Location','northeast')
 
