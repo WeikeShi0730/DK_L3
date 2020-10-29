@@ -9,18 +9,17 @@ loop_size = 1;
 x = Table(1:chan_size,3);
 
 for i = 1 : loop_size
-    block_rate(:,i) = Table(:,7);
-    offer_load(i) = Table(:,2);
+    block_rate = Table(:,7);
+    offer_load = Table(:,2);
 end
 
 
 hold on 
-for i = 1 : loop_size
-    %experiment
-    %block_p(i) = plot(x,block_rate(:,i),'Color',[0.1*i,0.13*i,0.6]);
-    %block_p(i).Marker = '*';
-    %text(x(chan_size/2-1),block_rate(chan_size/2-1,i),sprintf('A = %d',offer_load(i)))
-end;
+%block_p = plot(x,offer_load,'Color',[0.83,0.9,0.7]);
+block_p = plot(x,offer_load,'r');
+block_p.Marker = '*';
+
+%text(x(chan_size/2-1),block_rate(chan_size/2-1,i),sprintf('A = %d',offer_load(i)))
 
 hold off
 grid on
