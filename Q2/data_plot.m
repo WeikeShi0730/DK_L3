@@ -13,18 +13,32 @@ for i = 1 : loop_size
     offer_load(i) = Table(chan_size * (i),2);
 end
 
-%calc
-%for i = 1 : loop_size
-    %for I = 1 : x(i)
-        %B(:,i) = (offer_load(i).^x(i)/factorial(x(i)))/sum(offer_load(i).^I/factorial(I),I,0,x(i));
-    %end
-%end
+%equation
+for i = 1 : loop_size
+    A = offer_load(i);
+    for j = 1 : chan_size
+        N = x(j);
+        upper = (A^N/factorial(N));
+        lower = 0;
+        for k = 0 : N
+            %B = (A^N/factorial(N))/sum(A^I/factorial(I),I,0,N)
+            lower = lower + A^k/factorial(k);
+        end
+        theo_B(j,i) = upper/lower;
+    end
+end
 
 hold on 
 for i = 1 : loop_size
-    block_p(i) = plot(x,block_rate(:,i),'Color',[0.1*i,0.13*i,0.6]);
-    block_p(i).Marker = '*';
-    text(x(chan_size/2-1),block_rate(chan_size/2-1,i),sprintf('A = %d',offer_load(i)))
+    %experiment
+    %block_p(i) = plot(x,block_rate(:,i),'Color',[0.1*i,0.13*i,0.6]);
+    %block_p(i).Marker = '*';
+    %text(x(chan_size/2-1),block_rate(chan_size/2-1,i),sprintf('A = %d',offer_load(i)))
+
+    %equation
+    theo_p(i) = plot(x,theo_B(:,i),'Color',[0.6,0.12*i,0.1*i]);
+    theo_p(i).Marker = 'o';
+    text(x(chan_size-1),theo_B(chan_size-1,i),sprintf('A = %d',offer_load(i)))
 end;
 
 hold off
@@ -34,4 +48,5 @@ set(gca, 'YScale', 'log');
 
 xlabel('Number of Channels') 
 ylabel('Blocking rate') 
-
+%legend('experimental','equation','Location','northeast')
+%legend('experimental','equation','Location','southwest')
