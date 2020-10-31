@@ -111,7 +111,11 @@ void start_call_process(Simulation_Run_Ptr simulation_run,
   double wait_time = now - this_call->arrive_time;
 
   sim_data->call_wait_time += wait_time;
-  if (wait_time * 60 < sim_data->t)
+  if (wait_time > 0)
+  {
+    sim_data->blocked_call_count++;
+  }
+  if (wait_time < sim_data->t / 60.0)
   {
     sim_data->call_wait_less_than_t++;
   }

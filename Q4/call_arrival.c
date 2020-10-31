@@ -74,10 +74,6 @@ void call_arrival_event(Simulation_Run_Ptr simulation_run, void *ptr)
   new_call->arrive_time = now;
   new_call->call_duration = exponential_generator((double)sim_data->call_duration);
 
-  if (fifoqueue_size(sim_data->buffer) > 0)
-  {
-    sim_data->blocked_call_count++;
-  }
   /* See if there is a free channel.*/
   if ((free_channel = get_free_channel(simulation_run)) != NULL)
   {

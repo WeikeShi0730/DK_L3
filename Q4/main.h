@@ -61,7 +61,7 @@ typedef struct _simulation_run_data_
   double call_duration;
   double call_wait_time;
   long int call_wait_less_than_t;
-  int t;
+  double t;
   long int call_arrival_count;
   long int blocked_call_count;
   long int number_of_calls_processed;
