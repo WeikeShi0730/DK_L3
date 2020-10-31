@@ -32,7 +32,7 @@
 
 #define Call_ARRIVALRATE 1, 1, 1, 1, 1, 1   /* calls/minute */
 #define MEAN_CALL_DURATION 1, 3, 5, 7, 9, 11 /* minutes */
-#define RUNLENGTH 5e6        /* number of successful calls */
+#define RUNLENGTH 5e5        /* number of successful calls */
 #define BLIPRATE 1e3
 #define NUMBER_OF_CHANNELS 1, 3, 5, 7, 9, 11, 13, 15, 17, 19
 
