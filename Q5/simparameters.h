@@ -35,7 +35,7 @@
 #define Call_ARRIVALRATE 1*1, 1*1, 1*1, 1*1, 1*1, 1*1   /* calls/minute */ //lamda
 #define MEAN_CALL_DURATION 1*1, 3*1, 5*1, 7*1, 9*1, 11*1 /* minutes */ // D
 #define RUNLENGTH 5e4        /* number of successful calls */
-#define GIVE_UP_TIME 1*1, 3*1, 5*1, 7*1, 9*1, 11*1 //G
+#define GIVE_UP_TIME 1*2, 3*2, 5*2, 7*2, 9*2, 11*2 //G
 #define WAIT_TIME 1*1, 3*1, 5*1, 7*1, 9*1, 11*1 //W
 
 #define BLIPRATE 1e3

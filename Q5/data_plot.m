@@ -1,4 +1,6 @@
 %T = readtable('Q2.csv', 'HeaderLines',1);  % skips the first three rows of data
+%Table = csvread('Q5_give_x2.csv',1);  % skips the first three rows of data
+%Table = csvread('Q5_wait_x2.csv',1);  % skips the first three rows of data
 Table = csvread('Q5_base.csv',1);  % skips the first three rows of data
 
 chan_size = 10;
@@ -18,8 +20,8 @@ for i = 1 : loop_size
     left_p(i) = plot(x,left_rate(:,i),'Color',[0.3,0.19*i,0.1*i]);
     block_p(i).Marker = '*';
     left_p(i).Marker = 'o';
-    text(x(chan_size/2-1),block_rate(chan_size/2-1,i),sprintf('A_* = %d',offer_load(i)))
-    text(x(chan_size/2-2),left_rate(chan_size/2-2,i),sprintf('A_o = %d',offer_load(i)))
+    text(x(chan_size/2-2),block_rate(chan_size/2-2,i),sprintf('lamda = 1,D = %d',offer_load(i)))
+    %text(x(chan_size/2-2),left_rate(chan_size/2-2,i),sprintf('A_o = %d',offer_load(i)))
 end
 hold off
 grid on
